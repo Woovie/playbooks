@@ -9,7 +9,7 @@ Tasks:
 * Run a GET request against `http://localhost/nginx_status`
 
 ## create-jump-users.yml
-Goal: Create non-root users to login with.
+Goal: Create non-root users to login with. Loads data from `users.yml`.
 
 Tasks:
 * Create each user
@@ -18,7 +18,7 @@ Tasks:
 * Add each user's public key to their `.ssh/authorized_keys` file
 
 ## users.yml
-Contains the data for my user and the `ansible` user.
+Contains the data for my user and the `ansible` user. This is an external data structure which multiple other playbooks can load.
 
 ## setup-login.yml
 Goal: SSH "hardening" by at least changing the port and disabling some basic insecurities.
