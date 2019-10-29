@@ -37,14 +37,3 @@
         line: "{{ item.pubkey }}"
         create: yes
       with_items: "{{ users }}"
-    - name: Enable passwordless sudo
-      lineinfile:
-        path: /etc/sudoers
-        state: present
-        regexp: '^%wheel'
-        line: '%wheel ALL=(ALL) NOPASSWD: ALL'
-#    - name: Disable root login
-#      lineinfile:
-#        path: /etc/ssh/sshd_config
-#        regexp: '^PermitRootLogin'
-#        line: 'PermitRootLogin no'

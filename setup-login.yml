@@ -1,0 +1,47 @@
+---
+- hosts: "{{setupHosts}}"
+  gather_facts: no
+  vars_prompt:
+    - name: "setupHosts"
+      prompt: "What host do you want to execute against?"
+      private: no
+  tasks:
+    - name: Enable passwordless sudo
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^%wheel'
+        line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    - name: Disable root login
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: 'PermitRootLogin no'
+    - name: Change SSH port
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#Port'
+        line: 'Port 2250'
+    - name: Open port 2250
+      firewalld:
+        permanent: yes
+        immediate: yes
+        port: 2250/tcp
+        state: enabled
+    - name: Add 2250 to semanage ssh_port_t context
+      seport:
+        ports: 2250
+        proto: tcp
+        reload: yes
+        state: present
+        setype: ssh_port_t
+    - name: Restart SSH service
+      service:
+        name: 'sshd'
+        state: 'restarted'
+    - name: Close port 22
+      firewalld:
+        permanent: yes
+        immediate: yes
+        service: ssh
+        state: disabled
