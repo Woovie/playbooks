@@ -1,8 +1,12 @@
 # playbooks
 My ansible playbooks
 
-## mta-prod-status
-Pulls nginx\_status and uptime data from each host. I'm using [JSON callback](https://github.com/ansible/ansible/blob/devel/lib/ansible/plugins/callback/json.py) and sending this data in Python for further logging to a time series database.
+## mta-prod-status.yml
+Goal: Get `uptime` and `nginx-status` data.
+
+Tasks:
+* Execute `uptime`
+* Run a GET request against `http://localhost/nginx_status`
 
 ## create-jump-users.yml
 Goal: Create non-root users to login with.
